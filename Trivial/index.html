@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Juego de Trivia</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+
+<body class="bg-light">
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">🎯 Juego de Trivia</h2>
+
+        <div class="card">
+            <div class="card-body">
+                <h5 id="pregunta" class="card-title"></h5>
+                <div id="opciones" class="list-group my-3"></div>
+                <div id="temporizador" class="mb-3 text-danger fw-bold"></div>
+                <div id="mensaje" class="fw-bold"></div>
+            </div>
+        </div>
+
+        <div id="resultado" class="alert alert-success mt-4 d-none text-center fw-bold"></div>
+    </div>
+
+    <script>
+        let preguntas = [];
+        let preguntaActual = 0;
+        let puntuacion = 0;
+        let timer;
+        let segundosRestantes = 10;
+
+        // Decodifica HTML Entities
+        function decodeHTMLEntities(str) {
+            const txt = document.createElement("textarea");
+            txt.innerHTML = str;
+            return txt.value;
+        }
+
+        // Cargar preguntas desde API
+        async function cargarPreguntas() {
+            const res = await fetch('https://opentdb.com/api.php?amount=5&type=multiple');
+            const data = await res.json();
+            preguntas = data.results;
+            mostrarPregunta();
+        }
+
+        // Mostrar pregunta actual
+        function mostrarPregunta() {
+            if (preguntaActual >= preguntas.length) {
+                mostrarResultado();
+                return;
+            }
+
+            const pregunta = preguntas[preguntaActual];
+            const opciones = [...pregunta.incorrect_answers, pregunta.correct_answer];
+            const opcionesMezcladas = opciones.sort(() => Math.random() - 0.5);
+
+            document.getElementById('pregunta').textContent = decodeHTMLEntities(pregunta.question);
+            document.getElementById('mensaje').textContent = '';
+            document.getElementById('opciones').innerHTML = '';
+
+            opcionesMezcladas.forEach(opcion => {
+                const btn = document.createElement('button');
+                btn.textContent = decodeHTMLEntities(opcion);
+                btn.className = 'list-group-item list-group-item-action';
+                btn.onclick = () => validarRespuesta(opcion, pregunta.correct_answer);
+                document.getElementById('opciones').appendChild(btn);
+            });
+
+            iniciarTemporizador();
+        }
+
+        // Validar respuesta del usuario
+        function validarRespuesta(seleccionada, correcta) {
+            detenerTemporizador();
+
+            const mensaje = document.getElementById('mensaje');
+            if (seleccionada === correcta) {
+                mensaje.textContent = '✅ ¡Correcto!';
+                mensaje.className = 'text-success fw-bold';
+                puntuacion++;
+            } else {
+                mensaje.textContent = `❌ Incorrecto. La respuesta era: ${decodeHTMLEntities(correcta)}`;
+                mensaje.className = 'text-danger fw-bold';
+            }
+
+            setTimeout(() => {
+                preguntaActual++;
+                mostrarPregunta();
+            }, 2000);
+        }
+
+        // Mostrar resultado final
+        function mostrarResultado() {
+            document.querySelector('.card').style.display = 'none';
+            const resultado = document.getElementById('resultado');
+            resultado.textContent = `Juego terminado. Obtuviste ${puntuacion} de ${preguntas.length} puntos.`;
+            resultado.classList.remove('d-none');
+        }
+
+        // Iniciar temporizador
+        function iniciarTemporizador() {
+            segundosRestantes = 10;
+            actualizarTemporizador();
+            timer = setInterval(() => {
+                segundosRestantes--;
+                actualizarTemporizador();
+
+                if (segundosRestantes === 0) {
+                    detenerTemporizador();
+                    document.getElementById('mensaje').textContent = '⏰ Tiempo agotado';
+                    document.getElementById('mensaje').className = 'text-warning fw-bold';
+                    setTimeout(() => {
+                        preguntaActual++;
+                        mostrarPregunta();
+                    }, 2000);
+                }
+            }, 1000);
+        }
+
+        function actualizarTemporizador() {
+            document.getElementById('temporizador').textContent = `⏳ Tiempo restante: ${segundosRestantes}s`;
+        }
+
+        function detenerTemporizador() {
+            clearInterval(timer);
+        }
+
+        cargarPreguntas();
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
