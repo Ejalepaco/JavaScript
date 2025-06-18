@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Simulador de Tienda Online</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+
+<body class="bg-light">
+
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-8">
+
+        <h2 class="text-center mb-4">Tienda Online</h2>
+        
+        <!-- Filtro de búsqueda -->
+        <div class="mb-4">
+          <label for="filtro-categoria" class="form-label">Categoría</label>
+        <select id="filtro-categoria" class="form-select" onchange="aplicarFiltro()">
+          <option value="">Selecciona una categoría</option>
+          <option value="electronics">Electrónica</option>
+          <option value="jewelery">Joyería</option>
+          <option value="men's clothing">Ropa de hombre</option>
+          <option value="women's clothing">Ropa de mujer</option>
+        </select>
+        <br />
+        <label for="precio-minimo" class="form-label">Precio Mínimo</label>
+        <input type="number" id="precio-minimo" class="form-control" placeholder="Precio mínimo"
+          onchange="aplicarFiltro()" />
+        <br />
+        <label for="precio-maximo" class="form-label">Precio Máximo</label>
+        <input type="number" id="precio-maximo" class="form-control" placeholder="Precio máximo"
+        onchange="aplicarFiltro()" />
+      </div>
+      
+      <!-- Mensaje de carga -->
+      <div id="mensaje-cargando" class="text-center mb-4">
+        <p>Cargando productos...</p>
+      </div>
+      
+      <!-- Lista de productos -->
+      <div id="productos" class="row">
+        <!-- Los productos se cargarán aquí -->
+      </div>
+      
+      
+    </div>
+      <div class="col-4">
+        
+        <h3 class="mt-4">Carrito</h3>
+        <ul id="carrito" class="list-group mb-4">
+          <!-- Los productos en el carrito se mostrarán aquí -->
+        </ul>
+      </div>
+      <div>
+        <strong>Total: </strong><span id="total-carrito">0€</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let productos = [];
+    let carrito = [];
+
+    // Función para cargar los productos
+    async function cargarProductos() {
+      const response = await fetch('https://fakestoreapi.com/products');
+      const data = await response.json();
+      productos = data;
+      mostrarProductos(productos);
+    }
+
+    // Función para mostrar los productos
+    function mostrarProductos(productos) {
+      const contenedorProductos = document.getElementById('productos');
+      contenedorProductos.innerHTML = ''; // Limpiar productos previos
+
+      productos.forEach(producto => {
+        const productoDiv = document.createElement('div');
+        productoDiv.classList.add('col-md-4', 'mb-4');
+        productoDiv.innerHTML = `
+          <div class="card">
+            <img src="${producto.image}" class="card-img-top" alt="${producto.title}">
+            <div class="card-body">
+              <h5 class="card-title">${producto.title}</h5>
+              <p class="card-text">${producto.description}</p>
+              <p><strong>Precio: </strong>${producto.price}€</p>
+              <button class="btn btn-primary" onclick="agregarAlCarrito(${producto.id})">Agregar al carrito</button>
+            </div>
+          </div>
+        `;
+        contenedorProductos.appendChild(productoDiv);
+      });
+
+      document.getElementById('mensaje-cargando').style.display = 'none';
+    }
+
+    // Función para agregar un producto al carrito
+    function agregarAlCarrito(idProducto) {
+      const producto = productos.find(p => p.id === idProducto);
+      if (producto) {
+        carrito.push(producto);
+
+        // Simula un retraso de 2 segundos
+        setTimeout(() => {
+          alert('Producto agregado al carrito');
+          mostrarCarrito();
+        }, 2000);
+      }
+    }
+
+    // Función para mostrar los productos en el carrito
+    function mostrarCarrito() {
+      const carritoDiv = document.getElementById('carrito');
+      carritoDiv.innerHTML = ''; // Limpiar carrito previo
+
+      carrito.forEach((producto, index) => {
+        const productoCarrito = document.createElement('li');
+        productoCarrito.classList.add('list-group-item');
+        productoCarrito.innerHTML = `
+          ${producto.title} - ${producto.price}€
+          <button class="btn btn-danger btn-sm float-end" onclick="eliminarDelCarrito(${index})">Eliminar</button>
+        `;
+        carritoDiv.appendChild(productoCarrito);
+      });
+
+      actualizarTotalCarrito();
+    }
+
+    // Función para eliminar un producto del carrito
+    function eliminarDelCarrito(index) {
+      carrito.splice(index, 1);
+      mostrarCarrito();
+    }
+
+    // Función para actualizar el total del carrito
+    function actualizarTotalCarrito() {
+      const total = carrito.reduce((sum, producto) => sum + producto.price, 0);
+      document.getElementById('total-carrito').textContent = `${total}€`;
+    }
+
+    // Función para aplicar el filtro de búsqueda
+    function aplicarFiltro() {
+      const categoria = document.getElementById('filtro-categoria').value;
+      const precioMinimo = parseFloat(document.getElementById('precio-minimo').value) || 0;
+      const precioMaximo = parseFloat(document.getElementById('precio-maximo').value) || Infinity;
+
+      let productosFiltrados = productos;
+
+      if (categoria) {
+        productosFiltrados = productosFiltrados.filter(p => p.category.toLowerCase() === categoria.toLowerCase());
+      }
+
+      if (precioMinimo > 0) {
+        productosFiltrados = productosFiltrados.filter(p => p.price >= precioMinimo);
+      }
+
+      if (precioMaximo < Infinity) {
+        productosFiltrados = productosFiltrados.filter(p => p.price <= precioMaximo);
+      }
+
+      mostrarProductos(productosFiltrados);
+    }
+
+    // Cargar los productos cuando se carga la página
+    cargarProductos();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
