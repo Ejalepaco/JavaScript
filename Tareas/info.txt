@@ -1,0 +1,13 @@
+### Ejercicio 4: Lista de Tareas
+
+**Objetivo:** Crear una lista de tareas donde el usuario pueda agregar y eliminar tareas.
+
+**Instrucciones:**
+
+1. Crea una interfaz con un campo de texto y un botón para agregar tareas.
+2. Muestra las tareas en una lista.
+3. Permite al usuario eliminar tareas de la lista.
+
+icon backend https://cdn-icons-png.flaticon.com/512/3667/3667919.png
+icon frontend https://cdn-icons-png.flaticon.com/512/8099/8099466.png
+icon mkt https://cdn-icons-png.flaticon.com/512/5538/5538513.png
