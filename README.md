@@ -10,8 +10,8 @@ Repositorio de ejemplos y ejercicios en JavaScript, HTML y CSS, organizados por 
 - **Calculadora**  
   Implementación de una calculadora básica con operaciones aritméticas. Ideal para practicar lógica y eventos en JavaScript.
 
--**Equipajes en consigna**
-  Implementación de un registro de equipajes en consigna, para clientes que tienen reservas futuras en el hotel. 
+- **EquipajesConsigna**  
+  Registro de equipajes para clientes con reservas futuras en el hotel. Usa `localStorage` para almacenar los datos, ordena automáticamente por fecha y elimina reservas pasadas. Implementado con HTML, JavaScript, Bootstrap y SweetAlert2.
 
 - **Jquery/nodosJquery**  
   Ejercicios con jQuery y manipulación de nodos del DOM.
@@ -30,14 +30,8 @@ Repositorio de ejemplos y ejercicios en JavaScript, HTML y CSS, organizados por 
 
 ## 🚀 Tecnologías
 
-- HTML
-- CSS
-- JavaScript (incluyendo jQuery)
-- Consumo de APIs (`fetch`)
+- HTML  
+- CSS  
+- JavaScript (incluyendo jQuery)  
+- Consumo de APIs (`fetch`)  
 - Manipulación del DOM
-
-## 🛠️ Uso
-
-1. Clona este repositorio:
-   ```bash
-   git clone https://github.com/Ejalepaco/JavaScript.git
