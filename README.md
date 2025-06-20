@@ -10,6 +10,9 @@ Repositorio de ejemplos y ejercicios en JavaScript, HTML y CSS, organizados por 
 - **Calculadora**  
   Implementación de una calculadora básica con operaciones aritméticas. Ideal para practicar lógica y eventos en JavaScript.
 
+-**Equipajes en consigna**
+  Implementación de un registro de equipajes en consigna, para clientes que tienen reservas futuras en el hotel. 
+
 - **Jquery/nodosJquery**  
   Ejercicios con jQuery y manipulación de nodos del DOM.
 
