@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reservas de Habitaciones</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- SweetAlert2 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: rgb(231, 203, 152);
+    }
+  </style>
+</head>
+
+<body>
+  <h1 class="text-center mb-4 p-3 fs-1 🥐">Registro Desayunos Suites Viena Plaza de España</h1>
+  <div class="container py-4 ">
+    <h2 class="mb-4 ">Registro</h2>
+    <form id="reservaForm" class="row g-3" autocomplete="off">
+      <div class="col-md-3">
+        <label for="habitacion" class="form-label">Habitación</label>
+        <select id="habitacion" name="habitacion" class="form-select" required>
+          <option value="">Selecciona...</option>
+          <option value="102">102</option>
+          <option value="103">103</option>
+          <option value="201">201</option>
+          <option value="203">202</option>
+          <option value="203">203</option>
+          <option value="204">204</option>
+          <option value="205">205</option>
+          <option value="206">206</option>
+          <option value="207">207</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label for="fecha" class="form-label">Fecha de entrada</label>
+        <input type="date" id="fecha" name="fecha" class="form-control" required />
+      </div>
+      <div class="col-md-2">
+        <label for="noches" class="form-label">Número de noches</label>
+        <input type="number" id="noches" name="noches" min="1" class="form-control" required />
+      </div>
+      <div class="col-md-2">
+        <label for="personas" class="form-label">Número de personas</label>
+        <input type="number" id="personas" name="personas" min="1" class="form-control" required />
+      </div>
+      <div class="col-md-2">
+        <label for="franja" class="form-label">Franja horaria</label>
+        <select id="franja" name="franja" class="form-select" required>
+          <option value="">Selecciona...</option>
+          <option value="07:00">07:00</option>
+          <option value="07:30">07:30</option>
+          <option value="08:00">08:00</option>
+          <option value="08:30">08:30</option>
+          <option value="09:00">09:00</option>
+          <option value="09:30">09:30</option>
+          <option value="10:00">10:00</option>
+          <option value="10:30">10:30</option>
+        </select>
+      </div>
+      <div class="col-md-12">
+        <label for="observaciones" class="form-label">Observaciones</label>
+        <textarea id="observaciones" name="observaciones" class="form-control" rows="2"></textarea>
+      </div>
+      <div class="col-12 d-flex justify-content-end">
+        <button type="submit" id="btnSubmit" class="btn btn-primary">Guardar</button>
+        <button type="button" id="btnCancelar" class="btn btn-secondary ms-2 d-none">Cancelar edición</button>
+      </div>
+    </form>
+
+    <hr />
+
+    <div class="mb-4">
+      <h2>Listado de servicios por día</h2><br>
+      <label for="fechaFiltro" class="form-label">Filtra el resultado por la fecha que desees</label>
+      <input type="date" id="fechaFiltro" class="form-control" />
+
+      <table class="table table-bordered mt-3" id="tablaReservas">
+        <thead class="table-light">
+          <tr>
+            <th>Franja horaria</th>
+            <th>Habitación</th>
+            <th>Fecha entrada</th>
+            <th>Noches</th>
+            <th>Personas</th>
+            <th>Observaciones</th>
+            <th class="acciones">Acciones</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <button id="btnImprimir" class="btn btn-success mb-3">Imprimir listado</button>
+    </div>
+    <hr>
+    <!-- <h3>Listado las reservas registradas</h3> -->
+
+  </div>
+
+  <!-- Bootstrap JS Bundle (Popper incluido) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <!-- JS personalizado -->
+  <script src="reservas.js"></script>
+</body>
+
+</html>
