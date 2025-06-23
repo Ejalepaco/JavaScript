@@ -18,64 +18,119 @@
 </head>
 
 <body>
-  <h1 class="text-center mb-4 p-3 fs-1 🥐">Registro Desayunos Suites Viena Plaza de España</h1>
-  <div class="container py-4 ">
-    <h2 class="mb-4 ">Registro</h2>
-    <form id="reservaForm" class="row g-3" autocomplete="off">
-      <div class="col-md-3">
-        <label for="habitacion" class="form-label">Habitación</label>
-        <select id="habitacion" name="habitacion" class="form-select" required>
-          <option value="">Selecciona...</option>
-          <option value="102">102</option>
-          <option value="103">103</option>
-          <option value="201">201</option>
-          <option value="203">202</option>
-          <option value="203">203</option>
-          <option value="204">204</option>
-          <option value="205">205</option>
-          <option value="206">206</option>
-          <option value="207">207</option>
-        </select>
-      </div>
-      <div class="col-md-3">
-        <label for="fecha" class="form-label">Fecha de entrada</label>
-        <input type="date" id="fecha" name="fecha" class="form-control" required />
-      </div>
-      <div class="col-md-2">
-        <label for="noches" class="form-label">Número de noches</label>
-        <input type="number" id="noches" name="noches" min="1" class="form-control" required />
-      </div>
-      <div class="col-md-2">
-        <label for="personas" class="form-label">Número de personas</label>
-        <input type="number" id="personas" name="personas" min="1" class="form-control" required />
-      </div>
-      <div class="col-md-2">
-        <label for="franja" class="form-label">Franja horaria</label>
-        <select id="franja" name="franja" class="form-select" required>
-          <option value="">Selecciona...</option>
-          <option value="07:00">07:00</option>
-          <option value="07:30">07:30</option>
-          <option value="08:00">08:00</option>
-          <option value="08:30">08:30</option>
-          <option value="09:00">09:00</option>
-          <option value="09:30">09:30</option>
-          <option value="10:00">10:00</option>
-          <option value="10:30">10:30</option>
-        </select>
-      </div>
-      <div class="col-md-12">
-        <label for="observaciones" class="form-label">Observaciones</label>
-        <textarea id="observaciones" name="observaciones" class="form-control" rows="2"></textarea>
-      </div>
-      <div class="col-12 d-flex justify-content-end">
-        <button type="submit" id="btnSubmit" class="btn btn-primary">Guardar</button>
-        <button type="button" id="btnCancelar" class="btn btn-secondary ms-2 d-none">Cancelar edición</button>
-      </div>
+  <div class="container p-4">
+    <div class="border border-dark">
+      <h1 class="text-center mb-4 p-3 fs-1">🏨 Suites Viena Plaza de España 🥐</h1>
+      <h1 class="text-center mb-4 p-3 fs-1">Registro Desayunos</h1>
+    </div>
+  </div>
+  <div class="container p-4">
+    <div class="border border-primary p-3">
+      <h2 class="mb-4">Registro</h2>
+      <p>Los campos más habituales aparecen por defecto.</p>
+      <form id="reservaForm" class="row g-3" autocomplete="on">
+        <div class="col-md-3">
+          <label for="habitacion" class="form-label">Habitación</label>
+          <select id="habitacion" name="habitacion" class="form-select" required>
+            <option value="" disabled selected>Selecciona...</option>
+            <option value="102">102</option>
+            <option value="103">103</option>
+            <option value="201">201</option>
+            <option value="202">202</option>
+            <option value="203">203</option>
+            <option value="204">204</option>
+            <option value="205">205</option>
+            <option value="206">206</option>
+            <option value="207">207</option>
+            <option value="208">208</option>
+            <option value="209">209</option>
+            <option value="210">210</option>
+            <option value="211">211</option>
+            <option value="212">212</option>
+            <option value="301">301</option>
+            <option value="302">302</option>
+            <option value="303">303</option>
+            <option value="304">304</option>
+            <option value="305">305</option>
+            <option value="306">306</option>
+            <option value="307">307</option>
+            <option value="308">308</option>
+            <option value="309">309</option>
+            <option value="310">310</option>
+            <option value="311">311</option>
+            <option value="312">312</option>
+            <option value="401">401</option>
+            <option value="402">402</option>
+            <option value="403">403</option>
+            <option value="404">404</option>
+            <option value="405">405</option>
+            <option value="406">406</option>
+            <option value="407">407</option>
+            <option value="408">408</option>
+            <option value="409">409</option>
+            <option value="410">410</option>
+            <option value="411">411</option>
+            <option value="412">412</option>
+            <option value="501">501</option>
+            <option value="502">502</option>
+            <option value="503">503</option>
+            <option value="504">504</option>
+            <option value="505">505</option>
+            <option value="506">506</option>
+            <option value="507">507</option>
+            <option value="508">508</option>
+            <option value="509">509</option>
+            <option value="510">510</option>
+            <option value="511">511</option>
+            <option value="512">512</option>
+            <option value="601">601</option>
+            <option value="602">602</option>
+            <option value="603">603</option>
+            <option value="604">604</option>
+            <option value="605">605</option>
+            <option value="606">606</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="fecha" class="form-label">Fecha de entrada</label>
+          <input type="date" id="fecha" name="fecha" class="form-control" required />
+        </div>
+        <div class="col-md-2">
+          <label for="noches" class="form-label">Número de noches</label>
+          <input type="number" value="1" id="noches" name="noches" min="1" class="form-control" required />
+        </div>
+        <div class="col-md-2">
+          <label for="personas" class="form-label">Número de personas</label>
+          <input type="number" value="2" id="personas" name="personas" min="1" class="form-control" required />
+        </div>
+        <div class="col-md-2">
+          <label for="franja" class="form-label">Franja horaria</label>
+          <select id="franja" name="franja" class="form-select" required>
+            <option value="">Selecciona...</option>
+            <option value="07:00">07:00</option>
+            <option value="07:30">07:30</option>
+            <option value="08:00">08:00</option>
+            <option value="08:30">08:30</option>
+            <option value="09:00">09:00</option>
+            <option value="09:30">09:30</option>
+            <option value="10:00">10:00</option>
+            <option value="10:30">10:30</option>
+          </select>
+        </div>
+        <div class="col-md-12">
+          <label for="observaciones" class="form-label">Observaciones</label>
+          <textarea id="observaciones" name="observaciones" class="form-control" rows="2"></textarea>
+        </div>
+        <div class="col-12 d-flex justify-content-end">
+          <button type="submit" id="btnSubmit" class="btn btn-primary">Guardar</button>
+          <button type="button" id="btnCancelar" class="btn btn-secondary ms-2 d-none">Cancelar edición</button>
+        </div>
+    </div>
     </form>
 
-    <hr />
 
-    <div class="mb-4">
+
+    <div class="border border-primary p-3 mb-4 mt-4">
       <h2>Listado de servicios por día</h2><br>
       <label for="fechaFiltro" class="form-label">Filtra el resultado por la fecha que desees</label>
       <input type="date" id="fechaFiltro" class="form-control" />
@@ -96,7 +151,6 @@
       </table>
       <button id="btnImprimir" class="btn btn-success mb-3">Imprimir listado</button>
     </div>
-    <hr>
     <!-- <h3>Listado las reservas registradas</h3> -->
 
   </div>
