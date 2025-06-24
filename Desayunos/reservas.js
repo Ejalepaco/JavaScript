@@ -71,8 +71,20 @@ window.addEventListener("DOMContentLoaded", () => {
   const hoy = new Date().toISOString().split("T")[0];
   inputFecha.value = hoy;
 });
+
 function limpiarFormulario() {
-  form.reset();
+  // Guardamos los campos que deben mantenerse
+  const fechaActual = form.fecha.value;
+  const nochesActuales = form.noches.value;
+  const personasActuales = form.personas.value;
+
+  form.reset(); // Limpia todo
+
+  // Restauramos solo los valores deseados
+  form.fecha.value = fechaActual;
+  form.noches.value = nochesActuales;
+  form.personas.value = personasActuales;
+
   editIndex = null;
   btnSubmit.textContent = "Enviar reserva";
   btnCancelar.classList.add("d-none");
