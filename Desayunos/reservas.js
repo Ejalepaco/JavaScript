@@ -53,12 +53,14 @@ function mostrarTabla() {
     const entrada = new Date(reserva.fecha);
     entrada.setHours(0, 0, 0, 0);
 
-    const desayuno = new Date(entrada);
-    desayuno.setDate(entrada.getDate() + 1);
-    desayuno.setHours(0, 0, 0, 0);
+    const desayunoDesde = new Date(entrada);
+    desayunoDesde.setDate(desayunoDesde.getDate() + 1);
 
-    // Mostrar la reserva si el filtro coincide con el día del desayuno
-    if (filtroDate.getTime() === desayuno.getTime()) {
+    const desayunoHasta = new Date(entrada);
+    desayunoHasta.setDate(desayunoHasta.getDate() + reserva.noches);
+    desayunoHasta.setHours(0, 0, 0, 0);
+
+    if (filtroDate >= desayunoDesde && filtroDate <= desayunoHasta) {
       agregarFila(reserva, i);
     }
   });
