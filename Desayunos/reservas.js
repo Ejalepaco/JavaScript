@@ -53,19 +53,17 @@ function mostrarTabla() {
     const entrada = new Date(reserva.fecha);
     entrada.setHours(0, 0, 0, 0);
 
-    const salida = new Date(entrada);
-    salida.setDate(entrada.getDate() + reserva.noches - 1);
-    salida.setHours(0, 0, 0, 0);
+    const desayuno = new Date(entrada);
+    desayuno.setDate(entrada.getDate() + 1);
+    desayuno.setHours(0, 0, 0, 0);
 
-    const inicioServicio = new Date(entrada);
-    inicioServicio.setDate(entrada.getDate() + 1);
-    inicioServicio.setHours(0, 0, 0, 0);
-
-    if (filtroDate >= inicioServicio && filtroDate <= salida) {
+    // Mostrar la reserva si el filtro coincide con el día del desayuno
+    if (filtroDate.getTime() === desayuno.getTime()) {
       agregarFila(reserva, i);
     }
   });
 }
+
 window.addEventListener("DOMContentLoaded", () => {
   const inputFecha = document.getElementById("fecha");
   const hoy = new Date().toISOString().split("T")[0];
