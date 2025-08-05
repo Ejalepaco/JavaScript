@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hotel - Habitaciones</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">Oferta Maquetador Web - Mirai</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="habitaciones.html">Habitaciones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="blog.html">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="carrito.html">Carrito</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <h1>Habitaciones</h1>
+        <div class="row" id="habitaciones-container">
+            <div class="card col-md-3 m-2">
+                <img src="img/superior.png" class="card-img-top" alt="Habitación Superior">
+                <div class="card-body">
+                    <h5 class="card-title">Habitación Superior</h5>
+                    <button class="btn btn-info ver-detalle" data-id="superior">Ver detalle</button>
+                    <button class="btn btn-success elegir-habitacion" data-id="superior">Elegir</button>
+                </div>
+            </div>
+            <div class="card col-md-3 m-2">
+                <img src="img/familiar.png" class="card-img-top" alt="Habitación Familiar">
+                <div class="card-body">
+                    <h5 class="card-title">Habitación Familiar</h5>
+                    <button class="btn btn-info ver-detalle" data-id="familiar">Ver detalle</button>
+                    <button class="btn btn-success elegir-habitacion" data-id="familiar">Elegir</button>
+                </div>
+            </div>
+            <div class="card col-md-3 m-2">
+                <img src="img/terraza.png" class="card-img-top" alt="Habitación Terraza">
+                <div class="card-body">
+                    <h5 class="card-title">Habitación Terraza</h5>
+                    <button class="btn btn-info ver-detalle" data-id="terraza">Ver detalle</button>
+                    <button class="btn btn-success elegir-habitacion" data-id="terraza">Elegir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
