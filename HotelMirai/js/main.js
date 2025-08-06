@@ -1,7 +1,7 @@
 const habitaciones = {
   superior: { nombre: "Habitación Superior", precio: 120, descripcion: "Con vistas al mar y cama King Size." },
   familiar: { nombre: "Habitación Familiar", precio: 100, descripcion: "Ideal para familias con niños." },
-  terraza: { nombre: "Habitación Terraza", precio: 130, descripcion: "Con terraza privada y jacuzzi." }
+  terraza: { nombre: "Habitación Terraza", precio: 130, descripcion: "Con terraza privada y detalles de bienvenida." }
 };
 
 let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
