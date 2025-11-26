@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo RegExp con Bootstrap</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    code {
+      background-color: #f8f9fa;
+      padding: 8px;
+      border-radius: 5px;
+      display: block;
+      white-space: pre-wrap;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+
+<body class="bg-light">
+  <div class="container py-5">
+    <h1 class="mb-4 text-center">Demo de Expresiones Regulares en JS</h1>
+
+    <!-- Validar Email -->
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <h3 class="card-title">1. Validar Email</h3>
+        <div class="mb-3">
+          <input type="text" id="email" class="form-control" placeholder="Introduce tu email">
+        </div>
+        <button class="btn btn-primary mb-3" onclick="validarEmail()">Validar</button>
+        <div id="resultadoEmail" class="alert alert-secondary"></div>
+        <h5>Explicación en <code>JS</code>:</h5>
+        <code>
+const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+const resultado = regexEmail.test(email);
+                </code>
+      </div>
+    </div>
+
+    <!-- Validar Teléfono -->
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <h3 class="card-title">2. Validar Teléfono (España)</h3>
+        <div class="mb-3">
+          <input type="text" id="telefono" class="form-control" placeholder="Ej: 612345678">
+        </div>
+        <button class="btn btn-primary mb-3" onclick="validarTelefono()">Validar</button>
+        <div id="resultadoTelefono" class="alert alert-secondary"></div>
+        <h5>Explicación en <code>JS</code>:</h5>
+        <code>
+const regexTelefono = /^[6|7|9]\d{8}$/;
+const resultado = regexTelefono.test(telefono);
+                </code>
+      </div>
+    </div>
+
+    <!-- Buscar palabra en texto -->
+    <div class="card mb-4 shadow-sm">
+      <div class="card-body">
+        <h3 class="card-title">3. Buscar palabra en texto</h3>
+        <div class="mb-3">
+          <textarea id="texto" class="form-control" rows="4" placeholder="Escribe un texto aquí..."></textarea>
+        </div>
+        <div class="mb-3">
+          <input type="text" id="palabra" class="form-control" placeholder="Palabra a buscar">
+        </div>
+        <button class="btn btn-primary mb-3" onclick="buscarPalabra()">Buscar</button>
+        <div id="resultadoBusqueda" class="alert alert-secondary"></div>
+        <h5>Explicación en <code>JS</code>:</h5>
+        <code>
+const regex = new RegExp(`\\b${palabra}\\b`, 'gi');
+const coincidencias = texto.match(regex);
+                </code>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <!-- Bootstrap JS (opcional) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

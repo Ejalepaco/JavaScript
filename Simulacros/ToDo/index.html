@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ToDo List</title>
+  <style>
+    .completed { text-decoration: line-through; color: grey; }
+  </style>
+</head>
+<body>
+
+  <input id="taskInput" type="text" placeholder="Nueva tarea" />
+  <button id="addBtn">Añadir</button>
+
+  <ul id="taskList"></ul>
+
+<script>
+  const input = document.getElementById("taskInput");
+  const button = document.getElementById("addBtn");
+  const list = document.getElementById("taskList");
+
+  button.addEventListener("click", () => {
+    const text = input.value.trim();
+    if(!text) return;
+
+    const li = document.createElement("li");
+    li.textContent = text;
+
+    // Marcar completada
+    li.addEventListener("click", () => {
+      li.classList.toggle("completed");
+    });
+
+    // Botón eliminar
+    const del = document.createElement("button");
+    del.textContent = "X";
+    del.onclick = () => li.remove();
+
+    li.appendChild(del);
+    list.appendChild(li);
+
+    input.value = "";
+  });
+</script>
+
+</body>
+</html>

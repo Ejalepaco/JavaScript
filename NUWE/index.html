@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>LinkedList y HashMap en JavaScript</title>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+            background: #f4f4f4;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        .contenedor {
+            margin-bottom: 30px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px #ccc;
+        }
+
+        input,
+        button {
+            margin: 5px;
+            padding: 5px 10px;
+        }
+
+        .salida {
+            margin-top: 10px;
+            white-space: pre-wrap;
+            background: #eee;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>LinkedList y HashMap en JavaScript</h1>
+
+    <!-- LinkedList -->
+    <div class="contenedor">
+        <h2>LinkedList</h2>
+        <input id="ll-valor" type="text" placeholder="Valor a añadir">
+        <button onclick="añadirLinkedList()">Añadir</button>
+        <input id="ll-buscar" type="text" placeholder="Buscar valor">
+        <button onclick="buscarLinkedList()">Buscar</button>
+        <input id="ll-eliminar" type="text" placeholder="Eliminar valor">
+        <button onclick="eliminarLinkedList()">Eliminar</button>
+        <button onclick="imprimirLinkedList()">Mostrar lista</button>
+        <div class="salida" id="salida-ll"></div>
+    </div>
+
+    <!-- HashMap -->
+    <div class="contenedor">
+        <h2>HashMap</h2>
+        <input id="hm-clave" type="text" placeholder="Clave">
+        <input id="hm-valor" type="text" placeholder="Valor">
+        <button onclick="setHashMap()">Añadir/Actualizar</button>
+        <input id="hm-clave-get" type="text" placeholder="Clave a buscar">
+        <button onclick="getHashMap()">Buscar</button>
+        <input id="hm-clave-del" type="text" placeholder="Clave a eliminar">
+        <button onclick="deleteHashMap()">Eliminar</button>
+        <div class="salida" id="salida-hm"></div>
+    </div>
+
+    <div>
+        <table border="1" cellpadding="10" cellspacing="0"
+            style="border-collapse: collapse; width: 100%; text-align: left;">
+            <thead style="background-color: #f0f0f0;">
+                <tr>
+                    <th>Característica</th>
+                    <th>LinkedList</th>
+                    <th>HashMap</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Tipo de estructura</td>
+                    <td>Lista de nodos enlazados secuencialmente</td>
+                    <td>Tabla de dispersión (clave → valor)</td>
+                </tr>
+                <tr>
+                    <td>Acceso por posición</td>
+                    <td>Lento (recorriendo desde el principio)</td>
+                    <td>No aplica</td>
+                </tr>
+                <tr>
+                    <td>Acceso por clave</td>
+                    <td>No soportado</td>
+                    <td>Muy rápido (casi constante, O(1))</td>
+                </tr>
+                <tr>
+                    <td>Insertar elementos</td>
+                    <td>Rápido si se hace al inicio o final</td>
+                    <td>Rápido, se inserta por clave</td>
+                </tr>
+                <tr>
+                    <td>Eliminar elementos</td>
+                    <td>Rápido si se conoce la posición o valor</td>
+                    <td>Rápido si se conoce la clave</td>
+                </tr>
+                <tr>
+                    <td>Buscar elementos</td>
+                    <td>Lento (O(n))</td>
+                    <td>Muy rápido (O(1) promedio)</td>
+                </tr>
+                <tr>
+                    <td>Orden de los datos</td>
+                    <td>Se mantiene el orden de inserción</td>
+                    <td>No se garantiza (aunque en JS `Map` sí lo hace)</td>
+                </tr>
+                <tr>
+                    <td>Uso típico</td>
+                    <td>Colas, pilas, historial, navegación</td>
+                    <td>Caches, contadores, diccionarios, búsquedas</td>
+                </tr>
+                <tr>
+                    <td>Ventajas</td>
+                    <td>Buena para inserciones/eliminaciones dinámicas</td>
+                    <td>Acceso muy rápido por clave</td>
+                </tr>
+                <tr>
+                    <td>Desventajas</td>
+                    <td>Acceso lento a elementos intermedios</td>
+                    <td>Colisiones pueden afectar el rendimiento</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <script>
+        // ---------- LinkedList ----------
+        class Nodo {
+            constructor(valor) {
+                this.valor = valor;
+                this.siguiente = null;
+            }
+        }
+
+        class LinkedList {
+            constructor() {
+                this.cabeza = null;
+            }
+
+            añadir(valor) {
+                const nuevoNodo = new Nodo(valor);
+                if (!this.cabeza) {
+                    this.cabeza = nuevoNodo;
+                    return;
+                }
+                let actual = this.cabeza;
+                while (actual.siguiente) {
+                    actual = actual.siguiente;
+                }
+                actual.siguiente = nuevoNodo;
+            }
+
+            buscar(valor) {
+                let actual = this.cabeza;
+                while (actual) {
+                    if (actual.valor === valor) return true;
+                    actual = actual.siguiente;
+                }
+                return false;
+            }
+
+            eliminar(valor) {
+                if (!this.cabeza) return;
+                if (this.cabeza.valor === valor) {
+                    this.cabeza = this.cabeza.siguiente;
+                    return;
+                }
+                let actual = this.cabeza;
+                while (actual.siguiente && actual.siguiente.valor !== valor) {
+                    actual = actual.siguiente;
+                }
+                if (actual.siguiente) {
+                    actual.siguiente = actual.siguiente.siguiente;
+                }
+            }
+
+            imprimir() {
+                let actual = this.cabeza;
+                let resultado = '';
+                while (actual) {
+                    resultado += `${actual.valor} → `;
+                    actual = actual.siguiente;
+                }
+                return resultado + 'null';
+            }
+        }
+
+        const lista = new LinkedList();
+
+        function añadirLinkedList() {
+            const valor = document.getElementById("ll-valor").value;
+            lista.añadir(valor);
+            imprimirLinkedList();
+        }
+
+        function buscarLinkedList() {
+            const valor = document.getElementById("ll-buscar").value;
+            const encontrado = lista.buscar(valor);
+            document.getElementById("salida-ll").innerText = encontrado ? `Valor "${valor}" encontrado` : `Valor "${valor}" no está en la lista`;
+        }
+
+        function eliminarLinkedList() {
+            const valor = document.getElementById("ll-eliminar").value;
+            lista.eliminar(valor);
+            imprimirLinkedList();
+        }
+
+        function imprimirLinkedList() {
+            document.getElementById("salida-ll").innerText = lista.imprimir();
+        }
+
+        // ---------- HashMap ----------
+        class HashMap {
+            constructor(tamaño = 16) {
+                this.tabla = new Array(tamaño);
+                this.tamaño = tamaño;
+            }
+
+            hash(clave) {
+                let hash = 0;
+                for (let char of clave) {
+                    hash += char.charCodeAt(0);
+                }
+                return hash % this.tamaño;
+            }
+
+            set(clave, valor) {
+                const index = this.hash(clave);
+                if (!this.tabla[index]) this.tabla[index] = [];
+                for (let i = 0; i < this.tabla[index].length; i++) {
+                    if (this.tabla[index][i][0] === clave) {
+                        this.tabla[index][i][1] = valor;
+                        return;
+                    }
+                }
+                this.tabla[index].push([clave, valor]);
+            }
+
+            get(clave) {
+                const index = this.hash(clave);
+                const bucket = this.tabla[index];
+                if (!bucket) return undefined;
+                for (let [k, v] of bucket) {
+                    if (k === clave) return v;
+                }
+                return undefined;
+            }
+
+            delete(clave) {
+                const index = this.hash(clave);
+                const bucket = this.tabla[index];
+                if (!bucket) return;
+                this.tabla[index] = bucket.filter(([k, _]) => k !== clave);
+            }
+        }
+
+        const mapa = new HashMap();
+
+        function setHashMap() {
+            const clave = document.getElementById("hm-clave").value;
+            const valor = document.getElementById("hm-valor").value;
+            mapa.set(clave, valor);
+            document.getElementById("salida-hm").innerText = `Insertado: "${clave}" → "${valor}"`;
+        }
+
+        function getHashMap() {
+            const clave = document.getElementById("hm-clave-get").value;
+            const valor = mapa.get(clave);
+            document.getElementById("salida-hm").innerText = valor !== undefined
+                ? `Valor de "${clave}": ${valor}`
+                : `Clave "${clave}" no encontrada`;
+        }
+
+        function deleteHashMap() {
+            const clave = document.getElementById("hm-clave-del").value;
+            mapa.delete(clave);
+            document.getElementById("salida-hm").innerText = `Clave "${clave}" eliminada`;
+        }
+    </script>
+</body>
+
+</html>

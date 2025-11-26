@@ -8,6 +8,7 @@ const btnSubmit = document.getElementById("btnSubmit");
 const fechaFiltroInput = document.getElementById("fechaFiltro");
 const btnImprimir = document.getElementById("btnImprimir");
 
+// ===== CARGAR / GUARDAR =====
 function cargarReservas() {
   const datos = localStorage.getItem("reservas");
   reservas = datos ? JSON.parse(datos) : [];
@@ -18,6 +19,7 @@ function guardarReservas() {
   localStorage.setItem("reservas", JSON.stringify(reservas));
 }
 
+// ===== TABLA =====
 function agregarFila(reserva, i) {
   const fila = document.createElement("tr");
   fila.innerHTML = `
@@ -46,26 +48,33 @@ function mostrarTabla() {
     return;
   }
 
-  const filtroDate = new Date(fechaFiltro);
-  filtroDate.setHours(0, 0, 0, 0);
+  // Fecha del filtro como local
+  const filtroDate = new Date(fechaFiltro + "T00:00");
 
   reservas.forEach((reserva, i) => {
-    const entrada = new Date(reserva.fecha);
-    entrada.setHours(0, 0, 0, 0);
+    // Fecha de entrada como local
+    const entrada = new Date(reserva.fecha + "T00:00");
 
+    // Primer día de desayuno
     const desayunoDesde = new Date(entrada);
     desayunoDesde.setDate(desayunoDesde.getDate() + 1);
 
+    // Último día de desayuno
     const desayunoHasta = new Date(entrada);
     desayunoHasta.setDate(desayunoHasta.getDate() + reserva.noches);
-    desayunoHasta.setHours(0, 0, 0, 0);
 
+    // Ajuste de horas a 0 para comparación
+    desayunoDesde.setHours(0,0,0,0);
+    desayunoHasta.setHours(0,0,0,0);
+
+    // Filtrar por rango de desayuno
     if (filtroDate >= desayunoDesde && filtroDate <= desayunoHasta) {
       agregarFila(reserva, i);
     }
   });
 }
 
+// ===== FORMULARIO =====
 window.addEventListener("DOMContentLoaded", () => {
   const inputFecha = document.getElementById("fecha");
   const hoy = new Date().toISOString().split("T")[0];
@@ -73,25 +82,24 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 function limpiarFormulario() {
-  // Guardamos los campos que deben mantenerse
   const fechaActual = form.fecha.value;
   const nochesActuales = form.noches.value;
   const personasActuales = form.personas.value;
 
-  form.reset(); // Limpia todo
+  form.reset();
 
-  // Restauramos solo los valores deseados
   form.fecha.value = fechaActual;
   form.noches.value = nochesActuales;
   form.personas.value = personasActuales;
 
   editIndex = null;
-  btnSubmit.textContent = "Enviar reserva";
+  btnSubmit.textContent = "Guardar";
   btnCancelar.classList.add("d-none");
 }
 
 function editarReserva(i) {
   const reserva = reservas[i];
+
   document.getElementById("habitacion").value = reserva.habitacion;
   document.getElementById("fecha").value = reserva.fecha;
   document.getElementById("noches").value = reserva.noches;
@@ -107,7 +115,6 @@ function editarReserva(i) {
 function eliminarReserva(i) {
   Swal.fire({
     title: "¿Estás seguro?",
-    // text: "¡Recuerda !",
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#d33",
@@ -119,6 +126,7 @@ function eliminarReserva(i) {
       guardarReservas();
       mostrarTabla();
       Swal.fire("Eliminada!", "La reserva ha sido eliminada.", "success");
+
       if (editIndex === i) {
         limpiarFormulario();
       }
@@ -158,9 +166,11 @@ form.addEventListener("submit", (e) => {
 btnCancelar.addEventListener("click", limpiarFormulario);
 fechaFiltroInput.addEventListener("change", mostrarTabla);
 
+// ===== IMPRIMIR =====
 btnImprimir.addEventListener("click", () => {
   const contenidoTabla = document.getElementById("tablaReservas").outerHTML;
   const ventanaImprimir = window.open("", "", "width=800,height=600");
+
   ventanaImprimir.document.write(`
     <html>
       <head>
@@ -181,13 +191,16 @@ btnImprimir.addEventListener("click", () => {
       </body>
     </html>
   `);
+
   ventanaImprimir.document.close();
   ventanaImprimir.focus();
   ventanaImprimir.print();
   ventanaImprimir.close();
 });
 
-cargarReservas();
-
+// Exponer funciones globales
 window.editarReserva = editarReserva;
 window.eliminarReserva = eliminarReserva;
+
+// Cargar reservas al inicio
+cargarReservas();
