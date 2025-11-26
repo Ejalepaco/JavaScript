@@ -1,47 +1,163 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>ToDo List</title>
-  <style>
-    .completed { text-decoration: line-through; color: grey; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ToDo List Avanzada - Todo en un paso</title>
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+  body { background-color: #f8f9fa; padding-top:50px; font-family: Arial, sans-serif; }
+  .todo-container { max-width: 700px; margin: auto; }
+  .completed { text-decoration: line-through; color: grey; }
+  ul { padding-left: 0; }
+  li {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    position: relative;
+  }
+  li:hover { background-color: #f1f1f1; }
+  .task-title { font-weight: bold; font-size: 1.1rem; }
+  .task-desc { font-size: 0.9rem; margin-top: 5px; }
+  .task-date { font-size: 0.85rem; color: #555; margin-top: 3px; }
+  .task-actions { position: absolute; top: 10px; right: 10px; display: flex; gap: 5px; }
+  .task-actions button { padding: 2px 8px; border-radius: 5px; font-size: 0.8rem; }
+</style>
 </head>
 <body>
 
-  <input id="taskInput" type="text" placeholder="Nueva tarea" />
-  <button id="addBtn">Añadir</button>
+<div class="todo-container">
+  <h2 class="text-center mb-4">Lista de Tareas</h2>
+
+  <div class="mb-3">
+    <input id="taskTitle" type="text" class="form-control mb-2" placeholder="Título de la tarea">
+    <textarea id="taskDesc" class="form-control mb-2" placeholder="Descripción (opcional)"></textarea>
+    <input id="taskDate" type="date" class="form-control mb-2">
+    <button id="addBtn" class="btn btn-primary w-100">Añadir / Actualizar</button>
+  </div>
 
   <ul id="taskList"></ul>
+</div>
 
 <script>
-  const input = document.getElementById("taskInput");
-  const button = document.getElementById("addBtn");
-  const list = document.getElementById("taskList");
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+let editIndex = null;
 
-  button.addEventListener("click", () => {
-    const text = input.value.trim();
-    if(!text) return;
+const titleInput = document.getElementById("taskTitle");
+const descInput = document.getElementById("taskDesc");
+const dateInput = document.getElementById("taskDate");
+const button = document.getElementById("addBtn");
+const list = document.getElementById("taskList");
 
-    const li = document.createElement("li");
-    li.textContent = text;
+function saveTasks() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
 
-    // Marcar completada
-    li.addEventListener("click", () => {
-      li.classList.toggle("completed");
-    });
+function showTasks() {
+  list.innerHTML = '';
+  tasks.forEach((task, index) => {
+    const li = document.createElement('li');
+    li.className = task.completed ? 'completed' : '';
 
-    // Botón eliminar
-    const del = document.createElement("button");
-    del.textContent = "X";
-    del.onclick = () => li.remove();
-
-    li.appendChild(del);
+    li.innerHTML = `
+      <span class="task-title">${task.title}</span>
+      ${task.description ? `<span class="task-desc">${task.description}</span>` : ''}
+      ${task.dueDate ? `<span class="task-date">Vence: ${task.dueDate}</span>` : ''}
+      <div class="task-actions">
+        <button class="btn btn-success btn-sm" onclick="toggleComplete(${index})">${task.completed ? 'Desmarcar' : 'Completar'}</button>
+        <button class="btn btn-warning btn-sm" onclick="editTask(${index})">Editar</button>
+        <button class="btn btn-info btn-sm" onclick="addToGoogleCalendar(${index})">Google Calendar</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteTask(${index})">Eliminar</button>
+      </div>
+    `;
     list.appendChild(li);
-
-    input.value = "";
   });
+}
+
+function addTask() {
+  const title = titleInput.value.trim();
+  const desc = descInput.value.trim();
+  const date = dateInput.value;
+
+  if(!title) {
+    Swal.fire({icon:'warning', title:'Error', text:'El título no puede estar vacío', toast:true, position:'top-end', timer:1500, showConfirmButton:false});
+    return;
+  }
+
+  if(editIndex !== null) {
+    tasks[editIndex] = { ...tasks[editIndex], title, description: desc, dueDate: date };
+    editIndex = null;
+    Swal.fire({icon:'success', title:'Tarea actualizada', toast:true, position:'top-end', timer:1200, showConfirmButton:false});
+  } else {
+    tasks.push({ title, description: desc, dueDate: date, completed:false });
+    Swal.fire({icon:'success', title:'Tarea añadida', toast:true, position:'top-end', timer:1200, showConfirmButton:false});
+  }
+
+  saveTasks();
+  showTasks();
+  titleInput.value = '';
+  descInput.value = '';
+  dateInput.value = '';
+}
+
+function deleteTask(index) {
+  Swal.fire({
+    title:'¿Eliminar tarea?',
+    text:`"${tasks[index].title}" será eliminada.`,
+    icon:'warning',
+    showCancelButton:true,
+    confirmButtonText:'Sí, eliminar',
+    cancelButtonText:'Cancelar'
+  }).then(result=>{
+    if(result.isConfirmed){
+      tasks.splice(index,1);
+      saveTasks();
+      showTasks();
+      Swal.fire({icon:'success', title:'Tarea eliminada', toast:true, position:'top-end', timer:1200, showConfirmButton:false});
+    }
+  });
+}
+
+function toggleComplete(index) {
+  tasks[index].completed = !tasks[index].completed;
+  saveTasks();
+  showTasks();
+}
+
+function editTask(index) {
+  const task = tasks[index];
+  titleInput.value = task.title;
+  descInput.value = task.description;
+  dateInput.value = task.dueDate;
+  editIndex = index;
+}
+
+function addToGoogleCalendar(index) {
+  const task = tasks[index];
+  const start = task.dueDate ? new Date(task.dueDate) : new Date();
+  const end = new Date(start.getTime() + 60*60*1000);
+  const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(task.title)}&details=${encodeURIComponent(task.description||'')}&dates=${start.toISOString().replace(/-|:|\.\d+/g,'')}/${end.toISOString().replace(/-|:|\.\d+/g,'')}`;
+  window.open(url,'_blank');
+}
+
+// Eventos
+button.addEventListener('click', addTask);
+titleInput.addEventListener('keypress', e=>{ if(e.key==='Enter') addTask(); });
+
+showTasks();
 </script>
 
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
