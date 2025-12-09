@@ -1,4 +1,4 @@
-# JavaScript
+  # JavaScript
 
 Repositorio de ejemplos y ejercicios en JavaScript, HTML y CSS, organizados por carpetas para facilitar su exploración y uso.
 
@@ -35,3 +35,4 @@ Repositorio de ejemplos y ejercicios en JavaScript, HTML y CSS, organizados por 
 - JavaScript (incluyendo jQuery)  
 - Consumo de APIs (`fetch`)  
 - Manipulación del DOM
+- PostgreSQL
