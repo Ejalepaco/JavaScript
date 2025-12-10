@@ -1,201 +1,74 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<title>Jugadores Vóley</title>
-
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-<!-- Toastify CSS -->
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-
-<style>
-body {
-  background-color: #f0f2f5;
-  font-family: 'Segoe UI', sans-serif;
-  padding: 20px;
-}
-
-h3 {
-  text-align: center;
-  margin-bottom: 30px;
-  color: #0d6efd;
-}
-
-.card {
-  border-radius: 15px;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-
-.card-title {
-  color: #0d6efd;
-  font-weight: bold;
-}
-
-.card-text {
-  font-size: 0.9rem;
-}
-
-#players {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
-}
-</style>
+  <meta charset="UTF-8">
+  <title>Gestor de Equipos Vóley</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
+
 <body>
+  <div class="container py-4">
+    <h3 class="text-center mb-4">Gestión de Equipos y Jugadores</h3>
 
-<h3>Alta de Jugadores</h3>
+    <div class="row">
+      <!-- Columna izquierda: tarjetas de jugadores -->
+      <div class="col-lg-8" id="players"></div>
 
-<div class="mb-3">
-  <input id="name" class="form-control my-2" placeholder="Nombre" />
-  <input id="age" class="form-control my-2" type="number" placeholder="Edad" />
-  <select id="role" class="form-control my-2">
-      <option value="">Selecciona puesto</option>
-      <option value="colocador">Colocador</option>
-      <option value="central">Central</option>
-      <option value="ala">Ala</option>
-      <option value="opuesto">Opuesto</option>
-      <option value="libero">Líbero</option>
-  </select>
-  <button id="addPlayer" class="btn btn-primary w-100 my-2">Añadir jugador</button>
-</div>
+      <!-- Columna derecha: formulario y filtros -->
+      <div class="col-lg-4">
+        <!-- Crear equipo -->
+        <div class="mb-3">
+          <input id="teamName" class="form-control my-2" placeholder="Nombre del equipo" />
+          <button id="addTeam" class="btn btn-success w-100 my-2">Añadir equipo</button>
+        </div>
 
-<div id="players" class="row mt-4"></div>
+        <!-- Selección de equipo -->
+        <select id="teamSelect" class="form-control my-2">
+          <option value="">Selecciona equipo</option>
+        </select>
 
-<!-- Toastify JS -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+        <!-- Crear jugador -->
+        <input id="name" class="form-control my-2" placeholder="Nombre del jugador" />
+        <input id="age" class="form-control my-2" type="number" placeholder="Edad" />
+        <select id="role" class="form-control my-2">
+          <option value="">Selecciona puesto</option>
+          <option value="colocador">Colocador</option>
+          <option value="central">Central</option>
+          <option value="ala">Ala</option>
+          <option value="opuesto">Opuesto</option>
+          <option value="libero">Líbero</option>
+        </select>
+        <button id="addPlayer" class="btn btn-primary w-100 my-2">Añadir jugador</button>
 
-<script>
-const playersContainer = document.getElementById("players");
-let players = [];
-
-document.getElementById("addPlayer").addEventListener("click", () => {
-  const name = document.getElementById("name").value.trim();
-  const age = document.getElementById("age").value;
-  const role = document.getElementById("role").value;
-
-  if (!name || !age || !role) {
-    Toastify({
-      text: "Por favor, rellena todos los campos",
-      duration: 3000,
-      gravity: "top",
-      position: "right",
-      backgroundColor: "#f44336"
-    }).showToast();
-    return;
-  }
-
-  let description = "";
-  switch(role) {
-    case "colocador": description = "Especialista en organizar el juego y colocar el balón."; break;
-    case "central": description = "Jugador clave en bloqueo y ataques rápidos."; break;
-    case "ala": description = "Atacante y receptor versátil en las bandas."; break;
-    case "opuesto": description = "Potente atacante desde zona 2."; break;
-    case "libero": description = "Especialista defensivo y en recepción."; break;
-  }
-
-  const playerObj = { name, age, role, description };
-  players.push(playerObj);
-  renderPlayers();
-
-  // Limpiar inputs
-  document.getElementById("name").value = '';
-  document.getElementById("age").value = '';
-  document.getElementById("role").value = '';
-
-  // Notificación Toast
-  Toastify({
-    text: `${name} añadido correctamente`,
-    duration: 2500,
-    gravity: "top",
-    position: "right",
-    backgroundColor: "#4caf50"
-  }).showToast();
-});
-
-function renderPlayers() {
-  playersContainer.innerHTML = '';
-  players.forEach((player, index) => {
-    const card = document.createElement("div");
-    card.className = "col-md-3";
-    card.innerHTML = `
-      <div class="card shadow-sm mb-3">
-        <div class="card-body">
-          <h5 class="card-title">${player.name}</h5>
-          <p class="card-text"><strong>Edad:</strong> ${player.age}</p>
-          <p class="card-text"><strong>Puesto:</strong> ${player.role}</p>
-          <p class="card-text">${player.description}</p>
-          <div class="d-flex justify-content-end gap-2">
-            <button class="btn btn-warning btn-sm" onclick="editPlayer(${index})">Editar</button>
-            <button class="btn btn-danger btn-sm" onclick="deletePlayer(${index})">Eliminar</button>
+        <!-- Filtros -->
+        <div class="row my-3">
+          <div class="col-12 mb-2">
+            <select id="filterTeam" class="form-control">
+              <option value="">Filtrar por equipo</option>
+            </select>
+          </div>
+          <div class="col-12">
+            <select id="filterRole" class="form-control">
+              <option value="">Filtrar por puesto</option>
+              <option value="colocador">Colocador</option>
+              <option value="central">Central</option>
+              <option value="ala">Ala</option>
+              <option value="opuesto">Opuesto</option>
+              <option value="libero">Líbero</option>
+            </select>
           </div>
         </div>
+
+        <!-- Botón mostrar jugadores del equipo -->
+        <button id="showTeamPlayers" class="btn btn-info w-100 my-2">Mostrar jugadores del equipo</button>
       </div>
-    `;
-    playersContainer.appendChild(card);
-  });
-}
+    </div>
+  </div>
 
-function deletePlayer(index) {
-  const name = players[index].name;
-  players.splice(index, 1);
-  renderPlayers();
-  Toastify({
-    text: `${name} eliminado`,
-    duration: 2500,
-    gravity: "top",
-    position: "right",
-    backgroundColor: "#f44336"
-  }).showToast();
-}
-
-function editPlayer(index) {
-  const player = players[index];
-  document.getElementById("name").value = player.name;
-  document.getElementById("age").value = player.age;
-  document.getElementById("role").value = player.role;
-
-  // Cambiamos botón para actualizar
-  const btn = document.getElementById("addPlayer");
-  btn.textContent = "Actualizar jugador";
-  btn.onclick = () => {
-    player.name = document.getElementById("name").value.trim();
-    player.age = document.getElementById("age").value;
-    player.role = document.getElementById("role").value;
-
-    // Actualizar descripción
-    switch(player.role) {
-      case "colocador": player.description = "Especialista en organizar el juego y colocar el balón."; break;
-      case "central": player.description = "Jugador clave en bloqueo y ataques rápidos."; break;
-      case "ala": player.description = "Atacante y receptor versátil en las bandas."; break;
-      case "opuesto": player.description = "Potente atacante desde zona 2."; break;
-      case "libero": player.description = "Especialista defensivo y en recepción."; break;
-    }
-
-    renderPlayers();
-    btn.textContent = "Añadir jugador";
-    btn.onclick = null;
-    document.getElementById("name").value = '';
-    document.getElementById("age").value = '';
-    document.getElementById("role").value = '';
-
-    Toastify({
-      text: `${player.name} actualizado`,
-      duration: 2500,
-      gravity: "top",
-      position: "right",
-      backgroundColor: "#2196f3"
-    }).showToast();
-  };
-}
-</script>
-
+  <script src="app.js"></script>
 </body>
+
 </html>
